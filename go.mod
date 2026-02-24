@@ -6,4 +6,4 @@ require golang.org/x/text v0.34.0
 
 require github.com/google/uuid v1.6.0
 
-require github.com/cuhsat/go-mscfb v0.2.1 // indirect
+require github.com/cuhsat/go-mscfb v0.2.1
