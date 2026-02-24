@@ -40,10 +40,3 @@ func (r *Rows) Next() *Row {
 
 	return row
 }
-
-func NewRow(t *Table, values []Value) *Row {
-	return &Row{
-		Table:  t,
-		Values: values,
-	}
-}

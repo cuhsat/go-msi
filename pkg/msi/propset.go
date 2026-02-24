@@ -49,17 +49,6 @@ type PropertySet struct {
 	Properties map[uint32]*PropertyValue
 }
 
-func NewPropertySet(os OperatingSystem, osVersion uint16, fmtId []byte) *PropertySet {
-	return &PropertySet{
-		OS:         os,
-		OSVersion:  osVersion,
-		FmtID:      fmtId,
-		CLSID:      []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
-		CodePage:   CodePageDefault(),
-		Properties: make(map[uint32]*PropertyValue),
-	}
-}
-
 func ReadPropertySet(reader *mscfb.Stream) (*PropertySet, error) {
 	var byteOrder uint16
 	err := binary.Read(reader, binary.LittleEndian, &byteOrder)
