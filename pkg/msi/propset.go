@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/asalih/go-mscfb"
+	"github.com/cuhsat/go-mscfb/pkg/mscfb"
 )
 
 type OperatingSystem int
@@ -17,8 +17,8 @@ const (
 )
 
 const (
-	BYTE_ORDER_MARK   uint16 = 0xfffe
-	PROPERTY_CODEPAGE uint32 = 1
+	ByteOrderMark    uint16 = 0xfffe
+	PropertyCodepage uint32 = 1
 )
 
 type PropertyFormatVersion uint16
@@ -67,7 +67,7 @@ func ReadPropertySet(reader *mscfb.Stream) (*PropertySet, error) {
 		return nil, err
 	}
 
-	if byteOrder != BYTE_ORDER_MARK {
+	if byteOrder != ByteOrderMark {
 		return nil, fmt.Errorf("invalid byte order mark")
 	}
 
@@ -172,7 +172,7 @@ func ReadPropertySet(reader *mscfb.Stream) (*PropertySet, error) {
 	}
 
 	var codePageRead CodePage
-	offset, ok := propertyOffset[PROPERTY_CODEPAGE]
+	offset, ok := propertyOffset[PropertyCodepage]
 	if ok {
 		_, err = reader.Seek(int64(sectionOffset)+int64(offset), io.SeekStart)
 		if err != nil {

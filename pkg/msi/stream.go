@@ -1,6 +1,6 @@
 package msi
 
-import "github.com/asalih/go-mscfb"
+import "github.com/cuhsat/go-mscfb/pkg/mscfb"
 
 type Streams struct {
 	Entries *mscfb.Entries
@@ -20,9 +20,9 @@ func (s *Streams) Next() string {
 		}
 
 		if !entry.IsStream() ||
-			entry.Name == DIGITAL_SIGNATURE_STREAM_NAME ||
-			entry.Name == SUMMARY_INFO_STREAM_NAME ||
-			entry.Name == MSI_DIGITAL_SIGNATURE_EX_STREAM_NAME {
+			entry.Name == DigitalSignatureStreamName ||
+			entry.Name == SummaryInfoStreamName ||
+			entry.Name == DigitalSignatureExStreamName {
 			continue
 		}
 

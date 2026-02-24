@@ -14,62 +14,34 @@ import (
 type CodePage int
 
 const (
-	/// [Windows-932 (Japanese Shift JIS)](https://en.wikipedia.org/wiki/Code_page_932_(Microsoft_Windows))
 	Windows932 CodePage = iota
-	/// [Windows-936 (Chinese (simplified) GBK)](https://en.wikipedia.org/wiki/Code_page_936_(Microsoft_Windows))
 	Windows936
-	/// [Windows-949 (Korean Unified Hangul Code)](https://en.wikipedia.org/wiki/Unified_Hangul_Code)
 	Windows949
-	/// [Windows-950 (Chinese (traditional) Big5)](https://en.wikipedia.org/wiki/Code_page_950)
 	Windows950
-	/// [Windows-951 (Chinese (traditional) Big5-HKSCS)](https://en.wikipedia.org/wiki/Hong_Kong_Supplementary_Character_Set#Microsoft_Windows)
 	Windows951
-	/// [Windows-1250 (Latin 2)](https://en.wikipedia.org/wiki/Windows-1250)
 	Windows1250
-	/// [Windows-1251 (Cyrillic)](https://en.wikipedia.org/wiki/Windows-1251)
 	Windows1251
-	/// [Windows-1252 (Latin 1)](https://en.wikipedia.org/wiki/Windows-1252)
 	Windows1252
-	/// [Windows-1253 (Greek)](https://en.wikipedia.org/wiki/Windows-1253)
 	Windows1253
-	/// [Windows-1254 (Turkish)](https://en.wikipedia.org/wiki/Windows-1254)
 	Windows1254
-	/// [Windows-1255 (Hebrew)](https://en.wikipedia.org/wiki/Windows-1255)
 	Windows1255
-	/// [Windows-1256 (Arabic)](https://en.wikipedia.org/wiki/Windows-1256)
 	Windows1256
-	/// [Windows-1257 (Baltic)](https://en.wikipedia.org/wiki/Windows-1257)
 	Windows1257
-	/// [Windows-1258 (Vietnamese)](https://en.wikipedia.org/wiki/Windows-1258)
 	Windows1258
-	/// [Mac OS Roman](https://en.wikipedia.org/wiki/Mac_OS_Roman)
 	MacintoshRoman
-	/// [Macintosh
-	/// Cyrillic](https://en.wikipedia.org/wiki/Macintosh_Cyrillic_encoding)
 	MacintoshCyrillic
-	/// [US-ASCII](https://en.wikipedia.org/wiki/ASCII)
 	UsAscii
-	/// [ISO-8859-1 (Latin 1)](https://en.wikipedia.org/wiki/ISO-8859-1)
 	Iso88591
-	/// [ISO-8859-2 (Latin 2)](https://en.wikipedia.org/wiki/ISO-8859-2)
 	Iso88592
-	/// [ISO-8859-3 (South European)](https://en.wikipedia.org/wiki/ISO-8859-3)
 	Iso88593
-	/// [ISO-8859-4 (North European)](https://en.wikipedia.org/wiki/ISO-8859-4)
 	Iso88594
-	/// [ISO-8859-5 (Cyrillic)](https://en.wikipedia.org/wiki/ISO-8859-5)
 	Iso88595
-	/// [ISO-8859-6 (Arabic)](https://en.wikipedia.org/wiki/ISO-8859-6)
 	Iso88596
-	/// [ISO-8859-7 (Greek)](https://en.wikipedia.org/wiki/ISO-8859-7)
 	Iso88597
-	/// [ISO-8859-8 (Hebrew)](https://en.wikipedia.org/wiki/ISO-8859-8)
 	Iso88598
-	/// [UTF-8](https://en.wikipedia.org/wiki/UTF-8)
 	Utf8
 )
 
-// Returns the code page (if any) with the given ID number.
 func CodePageFromID(id int) CodePage {
 	switch id {
 	case 0:
@@ -135,7 +107,6 @@ func CodePageDefault() CodePage {
 	return Utf8
 }
 
-// Returns the ID number used within Windows to represent this code page.
 func (c CodePage) ID() int {
 	switch c {
 	case Windows932:

@@ -5,25 +5,25 @@ import (
 )
 
 const (
-	DIGITAL_SIGNATURE_STREAM_NAME        = "\x05DigitalSignature"
-	MSI_DIGITAL_SIGNATURE_EX_STREAM_NAME = "\x05MsiDigitalSignatureEx"
-	SUMMARY_INFO_STREAM_NAME             = "\x05SummaryInformation"
+	DigitalSignatureStreamName   = "\x05DigitalSignature"
+	DigitalSignatureExStreamName = "\x05MsiDigitalSignatureEx"
+	SummaryInfoStreamName        = "\x05SummaryInformation"
 
-	TABLE_PREFIX = "\xE4\xA1\x80"
+	TablePrefix = "\xE4\xA1\x80"
 )
 
 func NameEncode(name string, isTable bool) string {
 	var sb strings.Builder
 	if isTable {
-		sb.WriteString(TABLE_PREFIX)
+		sb.WriteString(TablePrefix)
 	}
 
-	len := len(name)
-	for i, j := 0, 1; i < len; i, j = i+1, j+1 {
+	l := len(name)
+	for i, j := 0, 1; i < l; i, j = i+1, j+1 {
 		char := rune(name[i])
 		if val1, match := toB64(char); match {
 			//peek
-			if j < len {
+			if j < l {
 				charNext := rune(name[j])
 				if val2, match := toB64(charNext); match {
 					encoded := 0x3800 + (val2 << 6) + val1
@@ -83,7 +83,7 @@ func NameIsValid(name string, isTable bool) bool {
 
 	enc := NameEncode(name, isTable)
 	var counter int
-	for _ = range enc {
+	for range enc {
 		counter++
 	}
 
@@ -92,7 +92,7 @@ func NameIsValid(name string, isTable bool) bool {
 }
 
 func hasTablePrefix(name string) bool {
-	return name[:len(TABLE_PREFIX)] == TABLE_PREFIX
+	return name[:len(TablePrefix)] == TablePrefix
 }
 
 func toB64(ch rune) (uint32, bool) {
@@ -127,15 +127,15 @@ func toB64(ch rune) (uint32, bool) {
 
 func fromB64(val rune) (rune, bool) {
 	if val < 10 {
-		return rune('0' + val), true
+		return '0' + val, true
 	}
 
 	if val < 36 {
-		return rune('A' + val - 10), true
+		return 'A' + val - 10, true
 	}
 
 	if val < 62 {
-		return rune('a' + val - 36), true
+		return 'a' + val - 36, true
 	}
 
 	if val == 62 {

@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/asalih/go-mscfb"
+	"github.com/cuhsat/go-mscfb/pkg/mscfb"
 )
 
 const (
-	LONG_STRING_REFS_BIT uint32 = 0x8000_0000
-	MAX_STRING_REF       int32  = 0xff_ffff
+	LongStringRefsBit uint32 = 0x8000_0000
 )
 
 type StringPoolBuilder struct {
@@ -76,18 +75,18 @@ func (pool *StringPoolBuilder) ReadFromPool(stream *mscfb.Stream) error {
 		return nil
 	}
 
-	lsr := (codepage & LONG_STRING_REFS_BIT) != 0
-	codepage = (codepage & ^LONG_STRING_REFS_BIT)
+	lsr := (codepage & LongStringRefsBit) != 0
+	codepage = codepage & ^LongStringRefsBit
 	codePageID := CodePageFromID(int(codepage))
 	if codePageID == -1 {
 		return fmt.Errorf("invalid codepage: %v", codePageID)
 	}
 
 	for {
-		var len uint16
+		var l uint16
 		var refCount uint16
 
-		err = binary.Read(stream, binary.LittleEndian, &len)
+		err = binary.Read(stream, binary.LittleEndian, &l)
 		if err != nil {
 			if err == io.EOF {
 				break
@@ -100,7 +99,7 @@ func (pool *StringPoolBuilder) ReadFromPool(stream *mscfb.Stream) error {
 			return err
 		}
 
-		if len == 0 && refCount > 0 {
+		if l == 0 && refCount > 0 {
 			var lenW uint16
 			err = binary.Read(stream, binary.LittleEndian, &lenW)
 			if err != nil {
@@ -122,7 +121,7 @@ func (pool *StringPoolBuilder) ReadFromPool(stream *mscfb.Stream) error {
 		}
 
 		splrc := stringPoolLRC{
-			Length:    uint32(len),
+			Length:    uint32(l),
 			RefCounts: refCount,
 		}
 		pool.LengthAndRefCounts = append(pool.LengthAndRefCounts, splrc)

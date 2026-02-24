@@ -5,7 +5,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/asalih/go-mscfb"
+	"github.com/cuhsat/go-mscfb/pkg/mscfb"
 )
 
 type columnMapValue struct {
@@ -20,7 +20,7 @@ type tableColumnKey struct {
 	Column string
 }
 
-type MSIPackage struct {
+type Package struct {
 	CompoundFile *mscfb.CompoundFile
 
 	PackageType PackageType
@@ -29,7 +29,7 @@ type MSIPackage struct {
 	Tables      map[string]*Table
 }
 
-func Open(rdr io.ReadSeeker) (*MSIPackage, error) {
+func Open(rdr io.ReadSeeker) (*Package, error) {
 	msiReader, err := mscfb.Open(rdr, mscfb.ValidationPermissive)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func Open(rdr io.ReadSeeker) (*MSIPackage, error) {
 	rootEntry := msiReader.RootEntry()
 	packageType := PackageTypeFromCLSID(rootEntry.CLSID)
 
-	summaryStream, err := msiReader.OpenStream(SUMMARY_INFO_STREAM_NAME)
+	summaryStream, err := msiReader.OpenStream(SummaryInfoStreamName)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,7 @@ func Open(rdr io.ReadSeeker) (*MSIPackage, error) {
 		return nil, err
 	}
 
-	stringTableStreamName := NameEncode(STRING_POOL_TABLE_NAME, true)
+	stringTableStreamName := NameEncode(StringPoolTableName, true)
 	stringTableStream, err := msiReader.OpenStream(stringTableStreamName)
 	if err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ func Open(rdr io.ReadSeeker) (*MSIPackage, error) {
 		return nil, err
 	}
 
-	stringDataStreamName := NameEncode(STRING_DATA_TABLE_NAME, true)
+	stringDataStreamName := NameEncode(StringDataTableName, true)
 	stringDataStream, err := msiReader.OpenStream(stringDataStreamName)
 	if err != nil {
 		return nil, err
@@ -213,16 +213,16 @@ func Open(rdr io.ReadSeeker) (*MSIPackage, error) {
 			return nil, fmt.Errorf("no columns for table %s", tableName)
 		}
 
-		len := len(columnSpecs)
+		l := len(columnSpecs)
 		idx := 0
-		lastIdx := len - 1
+		lastIdx := l - 1
 
 		if columnSpecs[idx].Index != 1 ||
-			columnSpecs[lastIdx].Index != len {
+			columnSpecs[lastIdx].Index != l {
 			return nil, fmt.Errorf("table %s does not have a complete set of columns", tableName)
 		}
 
-		columns := make([]*Column, 0, len)
+		columns := make([]*Column, 0, l)
 		for _, columnSpec := range columnSpecs {
 			builder := NewColumnBuilder(columnSpec.Name)
 			key := tableColumnKey{
@@ -280,7 +280,7 @@ func Open(rdr io.ReadSeeker) (*MSIPackage, error) {
 		allTables[tableName] = table
 	}
 
-	return &MSIPackage{
+	return &Package{
 		CompoundFile: msiReader,
 		PackageType:  packageType,
 		SummaryInfo:  &summaryInfo,
@@ -289,11 +289,11 @@ func Open(rdr io.ReadSeeker) (*MSIPackage, error) {
 	}, nil
 }
 
-func (p *MSIPackage) Streams() *Streams {
+func (p *Package) Streams() *Streams {
 	return NewStreams(p.CompoundFile.Directory.RootStorageEntries())
 }
 
-func (p *MSIPackage) ReadStream(streamName string) (io.ReadSeeker, error) {
+func (p *Package) ReadStream(streamName string) (io.ReadSeeker, error) {
 	if !NameIsValid(streamName, false) {
 		return nil, fmt.Errorf("invalid stream name: %s", streamName)
 	}
@@ -313,7 +313,7 @@ func (p *MSIPackage) ReadStream(streamName string) (io.ReadSeeker, error) {
 func makeTablesTable(longStringRefs bool) *Table {
 	col := NewColumnBuilder("Name").SetPrimaryKey().String(64)
 
-	return NewTable(TABLES_TABLE_NAME, []*Column{col}, longStringRefs)
+	return NewTable(TablesTableName, []*Column{col}, longStringRefs)
 }
 
 func makeColumnsTable(longStringRefs bool) *Table {
@@ -324,12 +324,12 @@ func makeColumnsTable(longStringRefs bool) *Table {
 		NewColumnBuilder("Type").Int16(),
 	}
 
-	return NewTable(COLUMNS_TABLE_NAME, cols, longStringRefs)
+	return NewTable(ColumnsTableName, cols, longStringRefs)
 }
 
 func makeValidationTable(longStringRefs bool) *Table {
-	var min int32 = -0x7fff_ffff
-	var max int32 = 0x7fff_ffff
+	var mn int32 = -0x7fff_ffff
+	var mx int32 = 0x7fff_ffff
 
 	categoriesAsStrings := make([]string, len(AllCategories))
 	for i, category := range AllCategories {
@@ -340,8 +340,8 @@ func makeValidationTable(longStringRefs bool) *Table {
 		NewColumnBuilder("Table").SetPrimaryKey().IDString(32),
 		NewColumnBuilder("Column").SetPrimaryKey().IDString(32),
 		NewColumnBuilder("Nullable").SetEnumValues("Y", "N").String(4),
-		NewColumnBuilder("MinValue").SetNullable().SetRange(min, max).Int32(),
-		NewColumnBuilder("MaxValue").SetNullable().SetRange(min, max).Int32(),
+		NewColumnBuilder("MinValue").SetNullable().SetRange(mn, mx).Int32(),
+		NewColumnBuilder("MaxValue").SetNullable().SetRange(mn, mx).Int32(),
 		NewColumnBuilder("KeyTable").SetNullable().IDString(255),
 		NewColumnBuilder("KeyColumn").SetNullable().SetRange(1, 32).Int16(),
 		NewColumnBuilder("Category").SetNullable().SetEnumValues(categoriesAsStrings...).String(32),
@@ -349,5 +349,5 @@ func makeValidationTable(longStringRefs bool) *Table {
 		NewColumnBuilder("Description").SetNullable().TextString(255),
 	}
 
-	return NewTable(VALIDATION_TABLE_NAME, cols, longStringRefs)
+	return NewTable(ValidationTableName, cols, longStringRefs)
 }

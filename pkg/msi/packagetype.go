@@ -1,26 +1,25 @@
 package msi
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+)
 
 type PackageType int
 
 const (
-	// An installer package, which installs a new application.
 	PackageTypeInstaller PackageType = iota
-	// A patch package, which provides an update to an application.
 	PackageTypePatch
-	// A transform, which is a collection of changes applied to an installation.
 	PackageTypeTransform
 )
 
 func PackageTypeFromCLSID(clsid uuid.UUID) PackageType {
 
 	switch clsid {
-	case uuid.MustParse(INSTALLER_PACKAGE_CLSID):
+	case uuid.MustParse(InstallerPackageClsid):
 		return PackageTypeInstaller
-	case uuid.MustParse(PATCH_PACKAGE_CLSID):
+	case uuid.MustParse(PatchPackageClsid):
 		return PackageTypePatch
-	case uuid.MustParse(TRANSFORM_PACKAGE_CLSID):
+	case uuid.MustParse(TransformPackageClsid):
 		return PackageTypeTransform
 	default:
 		return -1
@@ -30,11 +29,11 @@ func PackageTypeFromCLSID(clsid uuid.UUID) PackageType {
 func (p PackageType) CLSID() uuid.UUID {
 	switch p {
 	case PackageTypeInstaller:
-		return uuid.MustParse(INSTALLER_PACKAGE_CLSID)
+		return uuid.MustParse(InstallerPackageClsid)
 	case PackageTypePatch:
-		return uuid.MustParse(PATCH_PACKAGE_CLSID)
+		return uuid.MustParse(PatchPackageClsid)
 	case PackageTypeTransform:
-		return uuid.MustParse(TRANSFORM_PACKAGE_CLSID)
+		return uuid.MustParse(TransformPackageClsid)
 	default:
 		return uuid.Nil
 	}

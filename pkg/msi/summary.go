@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/asalih/go-mscfb"
+	"github.com/cuhsat/go-mscfb/pkg/mscfb"
 )
 
 type SummaryInfo struct {

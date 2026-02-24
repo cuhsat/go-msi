@@ -4,18 +4,15 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/asalih/go-mscfb"
+	"github.com/cuhsat/go-mscfb/pkg/mscfb"
 )
 
 const (
-	COL_FIELD_SIZE_MASK int32 = 0xff
-	COL_LOCALIZABLE_BIT int32 = 0x200
-	COL_STRING_BIT      int32 = 0x800
-	COL_NULLABLE_BIT    int32 = 0x1000
-	COL_PRIMARY_KEY_BIT int32 = 0x2000
-
-	COL_VALID_BIT     int32 = 0x100
-	COL_NONBINARY_BIT int32 = 0x400
+	ColFieldSizeMask  int32 = 0xff
+	ColLocalizableBit int32 = 0x200
+	ColStringBit      int32 = 0x800
+	ColNullableBit    int32 = 0x1000
+	ColPrimaryKeyBit  int32 = 0x2000
 )
 
 type ColumnType int
@@ -27,8 +24,8 @@ const (
 )
 
 func ColumnTypeFromBitField(typeBits int32) (ColumnType, int, error) {
-	fieldSize := int(typeBits & COL_FIELD_SIZE_MASK)
-	if typeBits&COL_STRING_BIT != 0 {
+	fieldSize := int(typeBits & ColFieldSizeMask)
+	if typeBits&ColStringBit != 0 {
 		return ColumnTypeStr, fieldSize, nil
 	} else if fieldSize == 4 {
 		return ColumnTypeInt32, fieldSize, nil

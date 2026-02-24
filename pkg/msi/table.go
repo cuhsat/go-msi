@@ -3,7 +3,7 @@ package msi
 import (
 	"io"
 
-	"github.com/asalih/go-mscfb"
+	"github.com/cuhsat/go-mscfb/pkg/mscfb"
 )
 
 type Table struct {
@@ -41,7 +41,7 @@ func (t *Table) ReadRows(stream *mscfb.Stream) ([][]*ValueRef, error) {
 
 	var numRows int64
 	if rowSize > 0 {
-		numRows = int64(dataLength) / int64(rowSize)
+		numRows = dataLength / int64(rowSize)
 	}
 
 	rows := make([][]*ValueRef, numRows)
