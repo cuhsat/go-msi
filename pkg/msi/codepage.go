@@ -9,6 +9,7 @@ import (
 	"golang.org/x/text/encoding/korean"
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"golang.org/x/text/encoding/traditionalchinese"
+	"golang.org/x/text/encoding/unicode"
 )
 
 type CodePage int
@@ -217,7 +218,7 @@ func (c CodePage) Encoding() encoding.Encoding {
 	case MacintoshCyrillic:
 		return charmap.MacintoshCyrillic
 	case UsAscii:
-		return nil
+		return charmap.ISO8859_1
 	case Iso88591:
 		return charmap.ISO8859_1
 	case Iso88592:
@@ -235,7 +236,7 @@ func (c CodePage) Encoding() encoding.Encoding {
 	case Iso88598:
 		return charmap.ISO8859_8
 	case Utf8:
-		return nil
+		return unicode.UTF8
 	default:
 		return nil
 	}
