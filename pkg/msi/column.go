@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/cuhsat/go-mscfb/pkg/mscfb"
+	"github.com/f0x4n6/go-mscfb/pkg/mscfb"
 )
 
 const (
