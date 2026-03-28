@@ -5,7 +5,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/f0x4n6/go-mscfb/pkg/mscfb"
+	"go.foxforensics.dev/go-mscfb/pkg/mscfb"
 )
 
 type columnMapValue struct {

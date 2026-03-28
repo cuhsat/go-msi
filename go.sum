@@ -1,6 +1,6 @@
-github.com/f0x4n6/go-mscfb v0.3.0 h1:P20fsTLjTRNvKHYMk+FxhL2jUMOOBnD6q23vPjbcCtE=
-github.com/f0x4n6/go-mscfb v0.3.0/go.mod h1:IuwQpqp8+wsOmC3z5ytafcmXCOa9btG5AtozNAKkSC4=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+go.foxforensics.dev/go-mscfb v0.3.1 h1:r+RyYDTfORA3JhjOkayijEOZhoBEmXfKwItXnKgppu4=
+go.foxforensics.dev/go-mscfb v0.3.1/go.mod h1:TgjRlg2kc5YaUBn7EuqyPw/iepgzHL7ivqHwDe9R/2Y=
 golang.org/x/text v0.35.0 h1:JOVx6vVDFokkpaq1AEptVzLTpDe9KGpj5tR4/X+ybL8=
 golang.org/x/text v0.35.0/go.mod h1:khi/HExzZJ2pGnjenulevKNX1W67CUy0AsXcNubPGCA=

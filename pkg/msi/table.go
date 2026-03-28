@@ -3,7 +3,7 @@ package msi
 import (
 	"io"
 
-	"github.com/f0x4n6/go-mscfb/pkg/mscfb"
+	"go.foxforensics.dev/go-mscfb/pkg/mscfb"
 )
 
 type Table struct {

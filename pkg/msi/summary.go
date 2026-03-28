@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/f0x4n6/go-mscfb/pkg/mscfb"
+	"go.foxforensics.dev/go-mscfb/pkg/mscfb"
 )
 
 type SummaryInfo struct {

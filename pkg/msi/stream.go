@@ -1,6 +1,6 @@
 package msi
 
-import "github.com/f0x4n6/go-mscfb/pkg/mscfb"
+import "go.foxforensics.dev/go-mscfb/pkg/mscfb"
 
 type Streams struct {
 	Entries *mscfb.Entries
